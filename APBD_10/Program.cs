@@ -1,25 +1,32 @@
 using APBD_10.Context;
 using Microsoft.EntityFrameworkCore;
+using YourNamespace.Repositories;
+using YourNamespace.Services;
 
 public class Program
 {
-    
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
-        //Registering services
+
+        // Registering services
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddControllers();
-        
-        // Rejestracja kontekstu bazy danych
+
+        // Registering ApplicationDbContext
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-        
+
+        // Register the PrescriptionService
+        builder.Services.AddScoped<IPrescriptionService, PrescriptionService>();
+        builder.Services.AddScoped<IRepository, Repository>();
+        builder.Services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
+
+
         var app = builder.Build();
 
-        //Configuring the HTTP request pipeline
+        // Configuring the HTTP request pipeline
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -27,6 +34,7 @@ public class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseAuthorization(); // Make sure to include authorization middleware if needed
         app.MapControllers();
 
         app.Run();

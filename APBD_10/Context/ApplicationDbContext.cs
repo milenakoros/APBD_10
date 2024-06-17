@@ -17,7 +17,8 @@ public class ApplicationDbContext : DbContext
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=146.19.215.204,55555;Database=milen;User Id=sa;Password=Nienawidzepj@tk!;TrustServerCertificate=true;");
+        optionsBuilder.UseSqlServer("Server=146.19.215.204,55555;Database=milen;User Id=sa;Password=Nienawidzepj@tk!;TrustServerCertificate=true;")
+            .LogTo(Console.WriteLine,LogLevel.Information);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

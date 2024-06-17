@@ -34,4 +34,17 @@ public class Repository : IRepository
         _context.Prescriptions.Add(prescription);
         await _context.SaveChangesAsync();
     }
+    public async Task<Patient> GetPatientByIdAsync(int patientId)
+    {
+        return await _context.Patients.FindAsync(patientId);
+    }
+
+    public async Task<List<Prescription>> GetPrescriptionsByPatientIdAsync(int patientId)
+    {
+        return await _context.Prescriptions
+            .Include(p => p.Prescription_Medicaments)
+            .Include(p => p.Doctor)
+            .Where(p => p.IdPatient == patientId)
+            .ToListAsync();
+    }
 }

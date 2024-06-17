@@ -20,8 +20,8 @@ public class Program
 
         // Register the PrescriptionService
         builder.Services.AddScoped<IPrescriptionService, PrescriptionService>();
+        builder.Services.AddScoped<IPatientService, PatientService>();
         builder.Services.AddScoped<IRepository, Repository>();
-        builder.Services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
 
 
         var app = builder.Build();
